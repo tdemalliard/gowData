@@ -47,16 +47,39 @@ var Troops = function ( allTroops ) {
 }
 
 // update bonuses
-function updateBonus() {
+function updateBonus( columns, tableId ) {
+    // get columns to filter with
+    var bonusColumns = [];
+     columns.forEach(function ( value ) {
+        if ( value[1].indexOf( 'lv20' ) > -1 ) {
+            bonusColumns.push( value[1] );
+        }
+    });
+
+    // add bonus
+// Find the heading with the text THEHEADING
+var columnTh = $("#troops #attack_lv20");
+
+// Get the index & increment by 1 to match nth-child indexing
+var columnIndex = columnTh.index( ) + 1; console.log(columnIndex);
+
+// Set all the elements with that index in a tr green
+$('table tr td:nth-child(' + columnIndex + ')').css("color", "green");
+
+var bonus = $( '' );
+$('table tr td:nth-child(' + columnIndex + ')').each( function ( ) {
+    $( this ).text( parseInt( $( this ).text() ) + parseInt(  ) );
+});
 
 
 }
+
 // display table of troops
 Troops.prototype.display = function ( element ) {
 
     // choose what to display here
     // format : [ header name, object property to display, class based on object property]
-    var columns = [
+    this.columns = [
         // ['',  'ct', 0],
         ['Name',  'name', 0],
         ['Rarity', 'rarityName', 1],
@@ -64,15 +87,15 @@ Troops.prototype.display = function ( element ) {
         ['Spell', 'spell_lv20', 0],
         ['Atk', 'attack_lv20', 0],
         ['Health', 'health_lv20', 0],
-        ['armor', 'armor_lv20', 0],
+        ['Armor', 'armor_lv20', 0],
     ];
-    var table = '<table class="table table-striped table-condensed sortable">'
+    var table = '<table id="troops" class="table table-striped table-condensed sortable">'
         + '<thead>'
         + '<tr>';
 
     // construct table headers
-    columns.forEach( function( value ) {
-        table += '<th>' + value[0] + '</th>';
+    this.columns.forEach( function( value ) {
+        table += '<th id="' + value[1] + '">' + value[0] + '</th>';
     } );
 
     table += '</tr><thead>'
@@ -82,7 +105,8 @@ Troops.prototype.display = function ( element ) {
     this.troops.forEach( function( troop ) {
         table += '<tr>';
 
-        columns.forEach( function( value ) {
+        this.columns.forEach( function( value ) {
+            // should we add a class?
             if ( value[2] != 0 ) {
                 table += '<td class="' + troop[value[1]] + '">' + troop[value[1]] + '</td>';
             } else {
@@ -91,7 +115,7 @@ Troops.prototype.display = function ( element ) {
         } );
 
         table += '</tr>';
-    } );
+    }, this );
 
     table += '</tbody></table>';
 
@@ -105,20 +129,20 @@ Troops.prototype.display = function ( element ) {
     // begin bonus
     formHtml += '<div class="col-xs-12 col-sm-8">'
     // atk
-    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="attack-bonus">Attack</label>'
-        + '<input id="attack-bonus" type="text" class="form-control" placeholder="0">'
+    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="attack_lv20-bonus">Attack</label>'
+        + '<input id="attack_lv20-bonus" type="text" class="form-control" placeholder="0">'
         + '</div>';
     // armor
-    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="armor-bonus">Armor</label>'
-        + '<input id="armor-bonus" type="text" class="form-control" placeholder="0">'
+    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="armor_lv20-bonus">Armor</label>'
+        + '<input id="armor_lv20-bonus" type="text" class="form-control" placeholder="0">'
         + '</div>';
     // health
-    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="health-bonus">Health</label>'
-        + '<input id="health-bonus" type="text" class="form-control" placeholder="0">'
+    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="health_lv20-bonus">Health</label>'
+        + '<input id="health_lv20-bonus" type="text" class="form-control" placeholder="0">'
         + '</div>';
     // spell
-    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="spell-bonus">Spell</label>'
-        + '<input id="spell-bonus" type="text" class="form-control" placeholder="0">'
+    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="spell_lv20-bonus">Spell</label>'
+        + '<input id="spell_lv20-bonus" type="text" class="form-control" placeholder="0">'
         + '</div>';
     // end bonus
     formHtml += '</div>';
@@ -144,6 +168,8 @@ Troops.prototype.display = function ( element ) {
         }).show();
     });
 
+    // add bonus support
+    updateBonus( this.columns, '#troops' );
 }
 
 
