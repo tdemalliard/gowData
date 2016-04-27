@@ -1,0 +1,40 @@
+/* rarity colors */
+.common {
+    
+}
+.Uncommon {
+    color: green;
+}
+.Rare {
+    color: blue;
+}
+.UltraRare {
+    color: purple;
+}
+.Epic {
+    color: orange;
+}
+
+/* mana colors */
+.blue {
+    color: blue;
+}
+.brown {
+    color: brown;
+}
+.green {
+    color: green;
+}
+.orange {
+    color: orange;
+}
+.purple {
+    color: purple;
+}
+.red {
+    color: red;
+}
+.yellow {
+    color: orange;
+    /*background-color: grey;*/
+}

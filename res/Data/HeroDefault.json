@@ -1,0 +1,25 @@
+{
+	"Level": 0,
+	"UnspentLevelUpPoints": 0,
+	"XP": 0,
+	"Skin_Head": 0,
+	"Skin_Body": 0,
+	"Gender": 0,
+	"Race": 0,
+	"GemMastery": [0,0,0,0,0,0],
+	"EquippedWeaponId": 0,
+	"Attack": 5,
+	"Armor": 20,
+	"SpellPower": 2,
+	"MaxHealth": 150,
+	"CurrentHealth": 150,
+	"Gold": 0,
+	"Gems": 0
+	
+	"Progress":
+	[
+		{Status: 2, Battles:[2, 2, 1, 4, 0, 0, 0]},
+		{Status: 1, Battles:[2, 1, 0, 0, 0, 0, 0]},
+		{Status: 0, Battles:[0, 0, 0, 0, 0, 0, 0]},
+	]
+}
