@@ -66,9 +66,10 @@ var columnIndex = columnTh.index( ) + 1; console.log(columnIndex);
 // Set all the elements with that index in a tr green
 $('table tr td:nth-child(' + columnIndex + ')').css("color", "green");
 
-var bonus = $( '' );
+var bonus = parseInt( $( '#attack_lv20-bonus' ).val() );
+
 $('table tr td:nth-child(' + columnIndex + ')').each( function ( ) {
-    $( this ).text( parseInt( $( this ).text() ) + parseInt(  ) );
+    $( this ).text( parseInt( $( this ).text() ) + bonus );
 });
 
 
@@ -130,19 +131,19 @@ Troops.prototype.display = function ( element ) {
     formHtml += '<div class="col-xs-12 col-sm-8">'
     // atk
     formHtml += '<div class="col-xs-3 col-sm-2"> <label for="attack_lv20-bonus">Attack</label>'
-        + '<input id="attack_lv20-bonus" type="text" class="form-control" placeholder="0">'
+        + '<input id="attack_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // armor
     formHtml += '<div class="col-xs-3 col-sm-2"> <label for="armor_lv20-bonus">Armor</label>'
-        + '<input id="armor_lv20-bonus" type="text" class="form-control" placeholder="0">'
+        + '<input id="armor_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // health
     formHtml += '<div class="col-xs-3 col-sm-2"> <label for="health_lv20-bonus">Health</label>'
-        + '<input id="health_lv20-bonus" type="text" class="form-control" placeholder="0">'
+        + '<input id="health_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // spell
     formHtml += '<div class="col-xs-3 col-sm-2"> <label for="spell_lv20-bonus">Spell</label>'
-        + '<input id="spell_lv20-bonus" type="text" class="form-control" placeholder="0">'
+        + '<input id="spell_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // end bonus
     formHtml += '</div>';
