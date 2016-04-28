@@ -47,32 +47,43 @@ var Troops = function ( allTroops ) {
 }
 
 // update bonuses
-function updateBonus( columns, tableId ) {
-    // get columns to filter with
-    var bonusColumns = [];
-     columns.forEach(function ( value ) {
-        if ( value[1].indexOf( 'lv20' ) > -1 ) {
-            bonusColumns.push( value[1] );
+function updateBonus( column, tableId ) {
+    //get column with current bonus
+    var columnTh = $( tableId + ' #' + column);
+
+    // Get the index & increment by 1 to match nth-child indexing
+    var columnIndex = columnTh.index( ) + 1;
+
+    // Set all the elements with that index in a tr green
+    var bonus = parseInt( $( '#' + column + '-bonus' ).val() );
+    // set bonus to 0  if empty
+    if ( bonus.length == 0 ) {
+        bonus = 0;
+    }
+    // set bonus to 0 if NaN
+    if ( isNaN(bonus) ) {
+        bonus = 0;
+    }
+
+    // for each cell of this column, add the bonus
+    $('table tr td:nth-child(' + columnIndex + ')').each( function ( ) {
+        $( this ).text( parseInt( $( this ).attr( 'data-value' ) ) + bonus );
+        if ( bonus == 0 ) {
+            $( this ).css("color", "black");
+        } else {
+            $( this ).css("color", "red");
         }
     });
+}
 
-    // add bonus
-// Find the heading with the text THEHEADING
-var columnTh = $("#troops #attack_lv20");
-
-// Get the index & increment by 1 to match nth-child indexing
-var columnIndex = columnTh.index( ) + 1; console.log(columnIndex);
-
-// Set all the elements with that index in a tr green
-$('table tr td:nth-child(' + columnIndex + ')').css("color", "green");
-
-var bonus = parseInt( $( '#attack_lv20-bonus' ).val() );
-
-$('table tr td:nth-child(' + columnIndex + ')').each( function ( ) {
-    $( this ).text( parseInt( $( this ).text() ) + bonus );
-});
-
-
+function bindBonusUpdate ( columns, tableId ) {
+     columns.forEach(function ( value ) {
+        if ( value[1].indexOf( 'lv20' ) > -1 ) {
+            $( '#' + value[1] + '-bonus' ).keyup(function () {
+                updateBonus( value[1], '#troops' );
+            });
+        }
+    });
 }
 
 // display table of troops
@@ -128,7 +139,10 @@ Troops.prototype.display = function ( element ) {
     // on large devices: 4 bonus input + filter input same line
     var formHtml = '<form><div class="row form-group">';
     // begin bonus
-    formHtml += '<div class="col-xs-12 col-sm-8">'
+    formHtml += '<div class="col-xs-12 col-sm-8 ">'
+        + '<div class="panel panel-default">'
+        + '<div class="panel-heading"><h3 class="panel-title"><strong>Kingdom bonuses</strong></h3></div>'
+        + '<div class="panel-body">';
     // atk
     formHtml += '<div class="col-xs-3 col-sm-2"> <label for="attack_lv20-bonus">Attack</label>'
         + '<input id="attack_lv20-bonus" type="text" class="form-control" value="0">'
@@ -138,7 +152,7 @@ Troops.prototype.display = function ( element ) {
         + '<input id="armor_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // health
-    formHtml += '<div class="col-xs-3 col-sm-2"> <label for="health_lv20-bonus">Health</label>'
+    formHtml += '<div class="col-xs-3 col-sm-2"><label for="health_lv20-bonus">Health</label>'
         + '<input id="health_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // spell
@@ -146,11 +160,14 @@ Troops.prototype.display = function ( element ) {
         + '<input id="spell_lv20-bonus" type="text" class="form-control" value="0">'
         + '</div>';
     // end bonus
-    formHtml += '</div>';
+    formHtml += '</div></div></div>';
     // filter
-    formHtml += '<div class="col-xs-12 col-sm-4"> <label for="filter-troops">Filter troops </label>'
+    formHtml += '<div class="col-xs-12 col-sm-4">' 
+        + '<div class="panel panel-default">'
+        + '<div class="panel-heading"><h3 class="panel-title"><strong>Filter troops</strong></h3></div>'
+        + '<div class="panel-body">'
         + '<input id="filter-troops" type="text" class="form-control" placeholder="Type here...">'
-        + '</div>';
+        + '</div></div></div>';
     // end of bonus and filter form
     formHtml += '</div></form>';
 
@@ -170,7 +187,7 @@ Troops.prototype.display = function ( element ) {
     });
 
     // add bonus support
-    updateBonus( this.columns, '#troops' );
+    bindBonusUpdate( this.columns, '#troops' );
 }
 
 
@@ -201,7 +218,7 @@ var Troop = function ( jsonTroop ) {
 
 // set manaColors as array of string colors
 Troop.prototype.setManaColors = function ( ) { 
-    // special case main color, keep it
+    // main color
     this.manaColors.push( this.json.PrimaryColor.toLowerCase() );
 
     for ( var key in this.json.ManaColors ) {
@@ -222,9 +239,7 @@ Troop.prototype.setManaColors = function ( ) {
 
 Troop.prototype.displayManaColors = function ( ) {
     // 1st is primary color
-    this.colorsHtml += '<strong><div class="' 
-        + this.manaColors[0] 
-        + '">'
+    this.colorsHtml += '<strong><div class="' + this.manaColors[0] + '">'
         + this.manaColors[0] 
         + '</div></strong> ';
 
@@ -276,6 +291,12 @@ function spellDisplay( spell ) {
 // 12 mana
 // 3 spell
 
+// Ancient Horror
+// 22 atk
+// 20 armor
+// 30 health
+// 19 spell
+//
 
 // SPELLLLLLL 
 // Cost: 3,
